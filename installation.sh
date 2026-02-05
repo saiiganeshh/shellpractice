@@ -1,12 +1,20 @@
 #!/bin/bash
-USERID=$( id -u)
 
-If [ $USERID -ne 0 ]; then
+USERID=$(id -u)
 
-echo "Run as root user"
+# Root user check
+if [ $USERID -ne 0 ]; then
+    echo "Run as root user"
+    exit 1
+fi
 
-exit 1
+echo "Installing nginx..."
+dnf install nginx -y
 
+# Check installation status
+if [ $? -ne 0 ]; then
+    echo "Installing nginx... FAILURE"
+    exit 1
 else
-
-echo "Script started"
+    echo "Installing nginx... SUCCESS"
+fi
